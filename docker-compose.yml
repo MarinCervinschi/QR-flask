@@ -1,0 +1,15 @@
+services:
+  qr-db:
+    image: mysql:8.4
+    container_name: qr-db
+    restart: always
+    environment:
+      MYSQL_DATABASE: qr_db
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - $HOME/database:/var/lib/mysql
+      - ./schema.sql:/docker-entrypoint-initdb.d/0_init.sql
+    ports:
+      - "3306:3306"
+    expose:
+      - "3306"
