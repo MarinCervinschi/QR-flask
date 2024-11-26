@@ -2,12 +2,9 @@ from flask import (
     Blueprint, flash, render_template, request, redirect, url_for, session)
 
 from ..db import get_db
+from .auth import json_data
 
 bp = Blueprint('dashboard', __name__, url_prefix='/dashboard')
-
-def json_data(description, data):
-    columns = [column[0] for column in description]
-    return [dict(zip(columns, row)) for row in data]
 
 def get_links():
     try:
