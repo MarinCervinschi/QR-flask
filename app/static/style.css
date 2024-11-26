@@ -45,6 +45,16 @@ footer {
     font-size: 14px;
 }
 
+
+/* Flash message styles */
+.flash {
+    background-color: #f39c12;
+    color: white;
+    padding: 0.5rem 1rem;
+    margin-bottom: 1rem;
+    border-radius: 5px;
+  }
+
 .container {
     height: 80vh;
     width: 100%;
