@@ -73,10 +73,11 @@ def load_logged_in_admin():
         finally:
             cur.close()
 
-@bp.route('/logout')
+@bp.route('/logout', methods=['POST'])
 def logout():
-    session.clear()
-    return redirect(url_for('auth.admin'))
+    if request.method == 'POST':
+        session.clear()
+        return redirect(url_for('auth.admin'))
 
 def admin_required(view):
     @functools.wraps(view)
