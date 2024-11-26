@@ -8,6 +8,7 @@ services:
       MYSQL_ROOT_PASSWORD: root
     volumes:
       - $HOME/database:/var/lib/mysql
+      # - C:/database:/var/lib/mysql # For Windows
       - ./schema.sql:/docker-entrypoint-initdb.d/0_init.sql
     ports:
       - "3306:3306"
