@@ -50,7 +50,8 @@ def admin():
             return redirect(url_for('auth.dashboard.dashboard'))
 
         flash(error)
-    
+    if g.user is not None:
+        return redirect(url_for('auth.dashboard.dashboard'))
     return render_template('admin.html')
 
 @bp.before_app_request
