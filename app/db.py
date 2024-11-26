@@ -10,24 +10,17 @@ def get_db():
     if 'db' not in g:
         try:
             g.db = mysql.connection
-
         except Exception as e:
             current_app.logger.error(f"Failed to connect to the database: {e}")
             raise
     return g.db
-
-def close_db(e=None):
-    """Close the database connection if it exists."""
-    db = g.pop('db', None)
-    if db is not None:
-        db.close()
 
 def init_db():
     """Initialize the database by executing the schema."""
     db = get_db()
     cursor = db.cursor()
 
-    schema_path = os.path.join(current_app.root_path, 'schema.sql')
+    schema_path = os.path.join(current_app.root_path, '../schema.sql')
     if not os.path.exists(schema_path):
         current_app.logger.error(f"Schema file not found: {schema_path}")
         raise FileNotFoundError(f"Schema file not found: {schema_path}")
@@ -35,7 +28,11 @@ def init_db():
     try:
         with open(schema_path, 'r') as f:
             schema = f.read()
-        cursor.execute(schema)
+
+        for command in schema.split(';'):
+            if command.strip():
+                cursor.execute(command)
+
         db.commit()
     except Exception as e:
         db.rollback()
@@ -55,5 +52,5 @@ def init_db_command():
 
 def init_app(app):
     """Register database functions with the Flask app."""
-    app.teardown_appcontext(close_db)
+    mysql.init_app(app)
     app.cli.add_command(init_db_command)

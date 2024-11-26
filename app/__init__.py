@@ -5,11 +5,10 @@ def create_app():
     app.config.from_mapping(
         SECRET_KEY='dev',  # change this in production
         MYSQL_HOST='127.0.0.1',
-        MYSQL_PORT='3306',
+        MYSQL_PORT=3306,
         MYSQL_USER='root',
         MYSQL_PASSWORD='root',
         MYSQL_DB='qr_db',
-        MYSQL_CONNECT_TIMEOUT=10,
     )
 
     from . import db
