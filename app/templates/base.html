@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Flask App</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <header>
-        <h1>Welcome to QR Flask App</h1>
+        <img src="{{ url_for('static', filename='/media/logo.png') }}" alt="logo" />
     </header>
     <main>
         {% block content %}
@@ -18,4 +18,4 @@
         <p>&copy; 2023 QR Flask App</p>
     </footer>
 </body>
-</html></html>
+</html>
