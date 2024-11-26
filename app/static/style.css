@@ -21,7 +21,7 @@ body {
     padding: 0;
     background-color: var(--bg-color);
     font-family: sans-serif;
-                      
+
     display: flex;
     flex-direction: column;
     height: 100vh;
@@ -45,8 +45,14 @@ footer {
     font-size: 14px;
 }
 
+main {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
 .container {
-    height: 80vh;
+    height: 100%;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -145,7 +151,7 @@ footer {
 }
 
 .dashboard-container {
-    height: 87vh;
+    height: auto;
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -153,6 +159,7 @@ footer {
     align-items: center;
     text-align: center;
     gap: 50px;
+    margin-top: 20px;
 }
 
 .links-grid-wrapper {
@@ -185,7 +192,7 @@ footer {
     gap: 1rem;
     padding: 1rem;
     max-height: 60vh;
-    overflow: scroll;
+    overflow: auto;
     background-color: #eaf4ed;
     border-radius: 0 0 15px 15px;
     align-items: center;
@@ -230,3 +237,95 @@ footer {
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+/* Adattamenti per dispositivi medi */
+@media (max-width: 1024px) {
+    .dashboard-container {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .links-grid-wrapper {
+        max-width: 90%;
+    }
+
+    .form-container {
+        max-width: 40%;
+    }
+}
+
+/* Adattamenti per dispositivi piccoli (tablet e smartphone) */
+@media (max-width: 768px) {
+    .links-grid-wrapper {
+        max-width: 80%;
+    }
+
+    .links-header {
+        grid-template-columns: 10% 30% 60%;
+        padding: 0.5rem 1rem 0.5rem;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .links-grid {
+        grid-template-columns: 10% 25% 60%;
+        padding: 1rem;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .links-header div,
+    .grid-element {
+        padding: 0.8rem;
+    }
+
+    .grid-button, .space {
+        display: none;
+    }
+
+    .form-container {
+        margin-bottom: 50px;
+    }    
+}
+
+/* Adattamenti per dispositivi molto piccoli */
+@media (max-width: 480px) {
+    .links-header, .links-grid {
+        grid-template-columns: 10% 85%;
+        gap: 0.3rem;
+        font-size: 0.8rem;
+    }
+
+    .grid-button {
+        width: 25px;
+        height: 25px;
+        font-size: 0.7rem;
+    }
+
+    .links-header div,
+    .grid-element {
+        padding: 0.5rem;
+    }
+
+    .form-container {
+        max-width: 80%;
+    }
+
+    .form-container h2 {
+        font-size: 2rem;
+    }
+
+    .form-container button {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+
+    .form-section input {
+        padding: 10px;
+        font-size: 0.85rem;
+    }
+
+    #hidden {
+        display: none;
+    }
+}

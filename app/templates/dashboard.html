@@ -8,16 +8,16 @@
             <div class="links-header">
                 <div>ID</div>
                 <div>INTERNAL</div>
-                <div>EXTERNAL</div>
-                <div></div>
-                <div></div>
-                <div></div>
+                <div id="hidden">EXTERNAL</div>
+                <div class="space"></div>
+                <div class="space"></div>
+                <div class="space"></div>
             </div>
             <div class="links-grid">
                 {% for link in links %}
                     <div class="grid-element">{{link.id}}</div>
                     <div class="grid-element">{{link.internal}}</div>
-                    <div class="grid-element">{{link.external}}</div>
+                    <div class="grid-element" id="hidden">{{link.external}}</div>
                     <button class="grid-button" style="background-color: red;">
                         <i class='bx bx-trash-alt'></i>
                     </button>
