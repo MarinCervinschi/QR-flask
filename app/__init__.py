@@ -1,19 +1,19 @@
 from flask import Flask
-from flask_mysqldb import MySQL
-
-mysql = MySQL()
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__, instance_relative_config=True)
+    app.config.from_mapping(
+        SECRET_KEY='dev',  # change this in production
+        MYSQL_HOST='127.0.0.1',
+        MYSQL_PORT='3306',
+        MYSQL_USER='root',
+        MYSQL_PASSWORD='root',
+        MYSQL_DB='qr_db',
+        MYSQL_CONNECT_TIMEOUT=10,
+    )
 
-    # MySQL configurations
-    app.config['MYSQL_HOST'] = '127.0.0.1'
-    app.config['MYSQL_PORT'] = 3306
-    app.config['MYSQL_USER'] = 'root'
-    app.config['MYSQL_PASSWORD'] = 'root'
-    app.config['MYSQL_DB'] = 'qr_db'
-
-    mysql.init_app(app)
+    from . import db
+    db.init_app(app)
 
     from .routes import main
     app.register_blueprint(main.bp)
