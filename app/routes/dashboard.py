@@ -1,8 +1,8 @@
 from flask import (
-    Blueprint, flash, render_template, request, redirect, url_for, session)
+    Blueprint, flash, render_template)
 
 from ..db import get_db
-from .auth import json_data
+from .auth import json_data, admin_required
 
 bp = Blueprint('dashboard', __name__, url_prefix='/dashboard')
 
@@ -22,13 +22,10 @@ def get_links():
     if links is not None:
         links = json_data(description, links)
 
-    print(links)
     return links
 
 @bp.route('/')
+@admin_required
 def dashboard():
-    if 'user' in session:
-        return render_template('dashboard.html', links=get_links())
-    else:
-        return render_template('status.html', status="401")
+    return render_template('dashboard.html', links=get_links())
     
