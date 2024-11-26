@@ -4,7 +4,10 @@
         <div class="text-container">
             <h2>Welcome to Dynamic QR Code</h2>
             
-            <button class="sign-in-button">SIGN IN</button>
+            
+            <a href="/admin" {% if request.path=='/admin' %} class="active" {% endif %}>
+                <button class="sign-in-button">SIGN IN</button>
+            </a>
         </div>
     </div>
 {% endblock %}
