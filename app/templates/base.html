@@ -14,9 +14,23 @@
     <main>
         {% block content %}
         {% endblock %}
+        {% for message in get_flashed_messages() %}
+            <div class="flash">
+                <p>{{ message }}</p>
+                <button onclick="hideFlash()">OK</button>
+            </div>
+        {% endfor %}
     </main>
     <footer>
         <p>&copy; 2023 Powered by Isabella Cappellino & Marin Cervinschi</p>
     </footer>
+    <script>
+        function hideFlash() {
+            const flash = document.querySelector('.flash');
+            if (flash) {
+                flash.style.display = 'none';
+            }
+        }
+    </script>
 </body>
 </html>
