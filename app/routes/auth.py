@@ -7,17 +7,23 @@ from werkzeug.security import check_password_hash
 
 bp = Blueprint('auth', __name__, url_prefix='/private')
 
+
 def json_data(description, data):
     columns = [column[0] for column in description]
     return [dict(zip(columns, row)) for row in data]
 
 def get_user(username):
-    db = get_db()
-    cur = db.cursor()
-    cur.execute("SELECT * FROM users WHERE username = %s", (username,))
-    description = cur.description
-    user = cur.fetchone()
-    cur.close()
+    try:
+        db = get_db()
+        cur = db.cursor()
+        cur.execute("SELECT * FROM users WHERE username = %s", (username,))
+        description = cur.description
+        user = cur.fetchone()
+    except Exception as e:
+        flash(f"An error occurred: {e}")
+        user = None
+    finally:
+        cur.close()
 
     if user is not None:
         user = json_data(description, [user])
@@ -41,16 +47,16 @@ def admin():
         if error is None:
             session.clear()
             session['user'] = user
-            return redirect(url_for('auth.dashboard'))
+            return redirect(url_for('auth.dashboard.dashboard'))
 
         flash(error)
     
     return render_template('admin.html')
 
-@bp.route('/admin/dashboard')
-def dashboard():
-    if 'user' in session:
-        return render_template('dashboard.html')
-    else:
-        return redirect(url_for('auth.admin'))
-    
+@bp.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('auth.admin'))
+
+from . import dashboard
+bp.register_blueprint(dashboard.bp)
