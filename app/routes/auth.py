@@ -53,5 +53,10 @@ def admin():
     
     return render_template('admin.html')
 
+@bp.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('auth.admin'))
+
 from . import dashboard
 bp.register_blueprint(dashboard.bp)
