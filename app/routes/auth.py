@@ -12,12 +12,17 @@ def json_data(description, data):
     return [dict(zip(columns, row)) for row in data]
 
 def get_user(username):
-    db = get_db()
-    cur = db.cursor()
-    cur.execute("SELECT * FROM users WHERE username = %s", (username,))
-    description = cur.description
-    user = cur.fetchone()
-    cur.close()
+    try:
+        db = get_db()
+        cur = db.cursor()
+        cur.execute("SELECT * FROM users WHERE username = %s", (username,))
+        description = cur.description
+        user = cur.fetchone()
+    except Exception as e:
+        flash(f"An error occurred: {e}")
+        user = None
+    finally:
+        cur.close()
 
     if user is not None:
         user = json_data(description, [user])
@@ -47,10 +52,30 @@ def admin():
     
     return render_template('admin.html')
 
+
+def get_links():
+    try:
+        db = get_db()
+        cur = db.cursor()
+        cur.execute("SELECT * FROM dynamic_links")
+        description = cur.description
+        links = cur.fetchall()
+    except Exception as e:
+        flash(f"An error occurred: {e}")
+        links = None
+    finally:
+        cur.close()
+
+    if links is not None:
+        links = json_data(description, links)
+
+    print(links)
+    return links
+
 @bp.route('/admin/dashboard')
 def dashboard():
     if 'user' in session:
-        return render_template('dashboard.html')
+        return render_template('dashboard.html', links=get_links())
     else:
         return redirect(url_for('auth.admin'))
     
