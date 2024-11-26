@@ -82,7 +82,7 @@ def admin_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
         if g.user is None:
-            return render_template('status.html', status="401")
+            return render_template('status.html', status="401"), 401
 
         return view(**kwargs)
 
