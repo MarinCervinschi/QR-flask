@@ -1,8 +1,5 @@
 {% extends "base.html" %}
 {% block content %}
-<style>
-        footer { display: none !important;}
-    </style>
     <div class="dashboard-container">
         <div class="links-grid-wrapper">
             <div class="links-header">
@@ -10,9 +7,9 @@
                 <div>INTERNAL</div>
                 <div id="hidden">EXTERNAL</div>
                 <div class="space"></div>
-                <div class="space"></div>
-                <div class="space"></div>
-            </div>
+                <button id="add_button" class="add"><i class='bx bx-add-to-queue' ></i></button>
+            </div>       
+                             
         <div class="grid">
             {% for link in links %}
             <form class="links-grid" method="POST" action="">
@@ -31,26 +28,26 @@
             </form>
             {% endfor %}
         </div>
-    </div>
-
-    <div class="form-container">
-        <h2>Add link</h2>
-        <form method="POST" action="/private/dashboard/add">
-            <div class="form-section">
-                <label for="internal">Internal</label>
-                <input type="text" id="internal" name="internal" required>
+      
+        <div class="popUp" id="add_form">
+            <div class="form-container">
+                <span id="close_button" class="close-popup-btn">&times;</span>
+                <h2>Add link</h2>
+                <form method="POST" action="/private/dashboard">
+                    <div class="form-section">
+                        <label for="internal">Internal</label>
+                        <input type="text" id="internal" name="internal" required>
+                    </div>
+                    <div class="form-section">
+                        <label for="external">External</label>
+                        <input type="text" id="external" name="external" required>
+                    </div>
+                    <button type="submit">ADD</button>
+                </form>
             </div>
-            <div class="form-section">
-                <label for="external">External</label>
-                <input type="text" id="external" name="external" required>
-            </div>
-            <button type="submit">ADD</button>
-        </form>
+        </div>
     </div>
-</div>
-    <form  action="/private/logout" method="POST">
-        <button class="logout" type="submit">Logout</button>
-    </form>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
     
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -117,6 +114,4 @@
         });
     });
 </script>
-
-
 {% endblock %}

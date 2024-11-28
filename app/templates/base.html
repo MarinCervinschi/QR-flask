@@ -13,7 +13,12 @@
             <img src="{{ url_for('static', filename='/media/logo.png') }}" alt="logo" />
         </a>
         {% if g.user %}
-            <h2><strong><</strong> Welcome <span>{{ g.user['username'] }}</span>! <strong>/></strong></h2>
+            <div class="user_true">
+                <h2><strong><</strong> Welcome <span>{{ g.user['username'] }}</span>! <strong>/></strong></h2>
+                <form  action="/private/logout" method="POST">
+                    <button class="logout-button" type="submit"><i class='bx bx-log-out'></i></button>
+                </form>
+            </div>
         {% endif %}
     </header>
     <main>
@@ -26,9 +31,6 @@
             </div>
         {% endfor %}
     </main>
-    <footer>
-        <p>&copy; 2023 Powered by Isabella Cappellino & Marin Cervinschi</p>
-    </footer>
     <script>
         function hideFlash() {
             const flash = document.querySelector('.flash');
