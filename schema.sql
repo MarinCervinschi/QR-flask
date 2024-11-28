@@ -20,4 +20,4 @@ INSERT INTO users (username, password) VALUES ('isa', 'scrypt:32768:8:1$Tl4A3uPd
 INSERT INTO users (username, password) VALUES ('marin', 'scrypt:32768:8:1$oLWzlj70mmIONXpS$1b338a31eaae838a4a691db89f6e8d1e81e9a8fc40911cbe7e214938021700a0fa74abca22bfef75c1b50cb0fa96b7bd1093c5fbc8970eeb5dff0326c117916b');
 
 -- insert test link
-INSERT INTO dynamic_links (internal, external) VALUES ('test_link', 'https://google.com');
+INSERT INTO dynamic_links (internal, external) VALUES ('google', 'google.com');
