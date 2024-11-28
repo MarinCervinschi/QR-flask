@@ -1,5 +1,5 @@
 from flask import (
-    Blueprint, flash, render_template, g, request, redirect, url_for, send_file)
+    Blueprint, flash, render_template, g, request, redirect, url_for, send_file, current_app as app)
 
 from ..db import get_db
 from .auth import json_data
@@ -159,7 +159,7 @@ def qr():
         flash("An error occurred: no link found", "error")
         return redirect(url_for('auth.dashboard.dashboard'))
     
-    url = 'http://127.0.0.1:5000/' + link['internal']
+    url = app.config['APP_URL'] + link['internal']
     print(url)
     filename = f"{link['internal']}_to_{link['external']}.png"
 

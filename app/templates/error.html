@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 - Page not found</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='error.css') }}">
+    <title>{% if error == '404' %} 404 - Page not found {% elif error == '401' %} 401 - Not authorized {% endif %}
+     </title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/error.css') }}">
 </head>
 <body>
     <div class="container">
@@ -13,7 +14,8 @@
         </svg>
         <h1>{{ error }}</h1>
         <h2>{% if error == '404' %}Page not found{% elif error == '401' %}Unauthorized{% endif %}</h2>
-        <p>{% if error == '404' %}The page you're looking for doesn't exist or has been moved.{% elif error == '401' %}You do not have permission to access this page.{% endif %}</p>
+        <p>{% if error == '404' %}The page you're looking for doesn't exist or has been moved.
+            {% elif error == '401' %}You do not have permission to access this page.{% endif %}</p>
     </div>
 </body>
 </html>
