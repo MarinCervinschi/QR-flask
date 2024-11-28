@@ -1,14 +1,14 @@
 :root {
     --bg-color: #f0f4f8;
     --text-color: #2d3748;
-    --primary-color: #4a7c59;
+    --primary-color: rgb(34,193,195);
     --secondary-color: #4ca67c;
     --accent-color: #b1d3c4;
 }
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--bg-color);
+    background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(45,182,253,1) 100%);
     color: var(--text-color);
     display: flex;
     justify-content: center;
