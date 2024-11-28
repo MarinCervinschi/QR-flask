@@ -7,8 +7,7 @@
                 <div>INTERNAL</div>
                 <div id="hidden">EXTERNAL</div>
                 <div class="space"></div>
-                <div class="space"></div>
-                <div class="space"></div>
+                <button id="add_button" class="add"><i class='bx bx-add-to-queue' ></i></button>
             </div>
             <div class="links-grid">
                 {% for link in links %}
@@ -27,21 +26,24 @@
                 {% endfor %}
             </div>
         </div>
-
-        <div class="form-container">
-            <h2>Add link</h2>
-            <form method="POST" action="/private/dashboard">
-                <div class="form-section">
-                    <label for="internal">Internal</label>
-                    <input type="text" id="internal" name="internal" required>
-                </div>
-                <div class="form-section">
-                    <label for="external">External</label>
-                    <input type="text" id="external" name="external" required>
-                </div>
-                <button type="submit">ADD</button>
-            </form>
+        
+        <div class="popUp" id="add_form">
+            <div class="form-container">
+                <span id="close_button" class="close-popup-btn">&times;</span>
+                <h2>Add link</h2>
+                <form method="POST" action="/private/dashboard">
+                    <div class="form-section">
+                        <label for="internal">Internal</label>
+                        <input type="text" id="internal" name="internal" required>
+                    </div>
+                    <div class="form-section">
+                        <label for="external">External</label>
+                        <input type="text" id="external" name="external" required>
+                    </div>
+                    <button type="submit">ADD</button>
+                </form>
+            </div>
         </div>
     </div>
-    
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
 {% endblock %}
