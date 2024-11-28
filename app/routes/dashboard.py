@@ -2,7 +2,7 @@ from flask import (
     Blueprint, flash, render_template, g, request, redirect, url_for, send_file, current_app as app)
 
 from ..db import get_db
-from .auth import json_data
+from .main import json_data
 
 import qrcode
 import io
@@ -19,16 +19,12 @@ def get_links():
         db = get_db()
         cur = db.cursor()
         cur.execute("SELECT * FROM dynamic_links")
-        description = cur.description
-        links = cur.fetchall()
+        links = json_data(cur.description, cur.fetchall())
     except Exception as e:
         flash(f"An error occurred: {e}")
         links = None
     finally:
         cur.close()
-
-    if links is not None:
-        links = json_data(description, links)
 
     return links
 
@@ -55,18 +51,14 @@ def get_internal(internal):
         db = get_db()
         cur = db.cursor()
         cur.execute("SELECT * FROM dynamic_links WHERE internal = %s", (internal,))
-        description = cur.description
-        internal = cur.fetchone()
+        internal = json_data(cur.description, cur.fetchone())
     except Exception as e:
-        flash(f"An error occurred nh: {e}")
+        flash(f"An error occurred: {e}")
         internal = None
     finally:
         cur.close()
 
-    if internal is not None:
-        internal = json_data(description, [internal])
-
-    return internal
+    return internal[0] if internal is not None else None
 
 @bp.route('/add', methods=['POST'])
 def add():
@@ -134,18 +126,14 @@ def get_link(id):
         db = get_db()
         cur = db.cursor()
         cur.execute("SELECT * FROM dynamic_links WHERE id = %s", (id,))
-        description = cur.description
-        link = cur.fetchone()
+        link = json_data(cur.description, cur.fetchone())
     except Exception as e:
         flash(f"An error occurred: {e}")
         link = None
     finally:
         cur.close()
 
-    if link is not None:
-        link = json_data(description, [link])[0]
-
-    return link
+    return link[0] if link is not None else None
 
 @bp.route('/qr', methods=['POST'])
 def qr():
