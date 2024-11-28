@@ -1,7 +1,6 @@
 from flask import (
     Blueprint, g, flash, render_template, request, redirect, url_for, session)
 
-import functools
 from ..db import get_db
 
 from werkzeug.security import check_password_hash
@@ -79,16 +78,6 @@ def logout():
     if request.method == 'POST':
         session.clear()
         return redirect(url_for('auth.admin'))
-
-def admin_required(view):
-    @functools.wraps(view)
-    def wrapped_view(**kwargs):
-        if g.user is None:
-            return render_template('status.html', status="401"), 401
-
-        return view(**kwargs)
-
-    return wrapped_view
 
 from . import dashboard
 bp.register_blueprint(dashboard.bp)

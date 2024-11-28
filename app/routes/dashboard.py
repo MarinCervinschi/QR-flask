@@ -1,10 +1,15 @@
 from flask import (
-    Blueprint, flash, render_template)
+    Blueprint, flash, render_template, g)
 
 from ..db import get_db
-from .auth import json_data, admin_required
+from .auth import json_data
 
 bp = Blueprint('dashboard', __name__, url_prefix='/dashboard')
+
+@bp.before_request
+def check_admin():
+    if g.user is None:
+        return render_template('status.html', status='401'), 401
 
 def get_links():
     try:
@@ -25,7 +30,6 @@ def get_links():
     return links
 
 @bp.route('/')
-@admin_required
 def dashboard():
     return render_template('dashboard.html', links=get_links())
     
