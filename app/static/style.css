@@ -189,6 +189,13 @@ main {
     border: 3px solid var(--primary-color);
 }
 
+.grid {
+    background-color: #eaf4ed;
+    border-radius: 0 0 15px 15px;
+    max-height: 60vh;
+    overflow: auto;
+}
+
 .links-header {
     display: grid;
     grid-template-columns: 6% 20% 48% 5% 5% 5%;
@@ -205,12 +212,7 @@ main {
 .links-grid {
     display: grid;
     grid-template-columns: 6% 20% 48% 5% 5% 5%;
-    gap: 1rem;
-    padding: 1rem;
-    max-height: 60vh;
-    overflow: auto;
-    background-color: #eaf4ed;
-    border-radius: 0 0 15px 15px;
+    padding: 0.5rem;
     align-items: center;
     justify-content: space-between;
 }

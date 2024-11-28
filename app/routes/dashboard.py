@@ -84,6 +84,23 @@ def add():
         flash(error), 500
         
     return redirect(url_for('auth.dashboard.dashboard'))
+
+@bp.route('/delete', methods=['POST'])
+def delete():
+    id = request.form['id']
+    try:    
+        db = get_db() 
+        cur = db.cursor()
+        cur.execute("DELETE FROM dynamic_links WHERE id = %s", (id,))
+        db.commit()
+    except Exception as e:
+        flash(f"An error occurred while deleting: {e}", "error")
+    finally:
+        cur.close()
+    
+    return redirect(url_for('auth.dashboard.dashboard'))
+
+
     
 
     

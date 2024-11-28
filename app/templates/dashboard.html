@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-    <style>
+<style>
         footer { display: none !important;}
     </style>
     <div class="dashboard-container">
@@ -13,41 +13,76 @@
                 <div class="space"></div>
                 <div class="space"></div>
             </div>
-            <div class="links-grid">
-                {% for link in links %}
-                    <div class="grid-element">{{link.id}}</div>
-                    <div class="grid-element">{{link.internal}}</div>
-                    <div class="grid-element" id="hidden">{{link.external}}</div>
-                    <button class="grid-button" style="background-color: red;">
-                        <i class='bx bx-trash-alt'></i>
-                    </button>
-                    <button class="grid-button" style="background-color: green;">
-                        <i class='bx bx-pencil'></i>
-                    </button>
-                    <button class="grid-button" style="background-color: blue;">
-                        <i class='bx bx-qr-scan' ></i>
-                    </button>
-                {% endfor %}
-            </div>
-        </div>
-
-        <div class="form-container">
-            <h2>Add link</h2>
-            <form method="POST" action="/private/dashboard/add">
-                <div class="form-section">
-                    <label for="internal">Internal</label>
-                    <input type="text" id="internal" name="internal" required>
-                </div>
-                <div class="form-section">
-                    <label for="external">External</label>
-                    <input type="text" id="external" name="external" required>
-                </div>
-                <button type="submit">ADD</button>
+        <div class="grid">
+            {% for link in links %}
+            <form class="links-grid" method="POST" action="">
+                <input type="hidden" name="action" id="action">
+                <input type="hidden" name="id" value="{{ link.id }}">
+                <div class="grid-element" id="">{{link.id}}</div>
+                <div class="grid-element">{{link.internal}}</div>
+                <div class="grid-element" id="hidden">{{link.external}}</div>
+                <button type="submit" class="grid-button" style="background-color: red;" data-action="/delete">
+                    <i class='bx bx-trash-alt'></i>
+                </button>
+                <button type="submit" class="grid-button" style="background-color: green;" data-action="/edit">
+                    <i class='bx bx-pencil'></i>
+                </button>
+                <button type="submit" class="grid-button" style="background-color: blue;" data-action="/qr">
+                    <i class='bx bx-qr-scan'></i>
+                </button>
             </form>
+            {% endfor %}
         </div>
     </div>
+
+    <div class="form-container">
+        <h2>Add link</h2>
+        <form method="POST" action="/private/dashboard/add">
+            <div class="form-section">
+                <label for="internal">Internal</label>
+                <input type="text" id="internal" name="internal" required>
+            </div>
+            <div class="form-section">
+                <label for="external">External</label>
+                <input type="text" id="external" name="external" required>
+            </div>
+            <button type="submit">ADD</button>
+        </form>
+    </div>
+</div>
     <form  action="/private/logout" method="POST">
         <button class="logout" type="submit">Logout</button>
     </form>
     
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Select all forms in the page
+        const forms = document.querySelectorAll('.links-grid');
+
+        // Loop through each form
+        forms.forEach(form => {
+            const buttons = form.querySelectorAll('.grid-button');
+
+            buttons.forEach(button => {
+                button.addEventListener('click', function (e) {
+                    // Prevent the default form submission
+                    e.preventDefault();
+
+                    // Set the form's action to the data-action of the clicked button
+                    const action = button.getAttribute('data-action');
+                    form.setAttribute('action', '/private/dashboard' + action);
+                    console.log(action);
+
+                    // Confirm the action
+                    if (button.getAttribute('data-action') === '/delete' && confirm('Are you sure you want to remove?')) {
+                        // Submit the form after confirmation
+                        form.submit();
+                    }
+                });
+            });
+        });
+    });
+</script>
+
+
 {% endblock %}
