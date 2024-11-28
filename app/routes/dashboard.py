@@ -124,7 +124,8 @@ def edit():
     # Reindirizza all'area desiderata dopo l'aggiornamento
     return redirect(url_for('auth.dashboard.dashboard'))
 
-@bp.route('/edit', methods=['POST'])
+@bp.route('/qr', methods=['POST'])
 def qr():
+    pass
     
     
