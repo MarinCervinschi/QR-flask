@@ -7,15 +7,16 @@
             <div>INTERNAL</div>
             <div id="hidden">EXTERNAL</div>
             <div class="space"></div>
+            <div class="space"></div>
             <button id="add_button" class="add"><i class='bx bx-add-to-queue'></i></button>
         </div>
 
         <div class="grid">
             {% for link in links %}
             <form class="links-grid" method="POST" action="">
-                <input type="text" class="grid-element" id="id" name="id" value="{{ link.id }}">
+                <input type="text" class="grid-element" name="id" value="{{ link.id }}">
                 <a class="grid-element" href="{{link.external}}">{{link.internal}}</a>
-                <input type="button" class="grid-element" id="external" name="external" value="{{link.external}}">
+                <input type="button" class="grid-element" style="padding: 15px 40px 15px;" name="external" value="{{link.external}}">
                 <button type="submit" class="grid-button" style="background-color: red;" data-action="/delete">
                     <i class='bx bx-trash-alt'></i>
                 </button>
