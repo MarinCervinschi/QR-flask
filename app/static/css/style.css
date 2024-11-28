@@ -256,61 +256,25 @@ main {
     animation: fade-in 0.5s ease-out;
     z-index: 9999;
     background-color: white;
+    transition: opacity 1s ease-out; 
 }
 
 /* Flash success message */
 .flash.success {
     border: 3px solid #28a745; /* Green background */
     color: #28a745;
-
-    >button{
-        border: 3px solid #28a745;
-        
-        &:hover {
-            color: white;
-            background-color: #2188379c;
-        }
-    }
 }
 
 /* Flash error message */
 .flash.error {
     border: 3px solid #db2619; /* Intense red background */
     color: #db2619;
-    >button{
-        border: 3px solid #db2619;
-
-        &:hover {
-            color: white;
-            background-color: #d9271ab7;
-        }
-    }
 }
 
 /* Flash message text */
 .flash p {
     margin: 0;
     font-weight: bold;
-}
-
-/* Button inside flash message */
-.flash button {
-    background-color: white;
-    color: inherit; /* Inherit the text color (green for success, red for error) */
-    border: none;
-    border-radius: 10px;
-    padding: 6px 10px;
-    font-size: 0.7rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: transform 0.3s ease-in-out, background-color 0.3s;
-}
-
-/* Button hover effect */
-.flash button:hover {
-    transform: scale(1.1);
-    background-color: inherit; /* Inherit background color (green/red) */
-    color: white; /* Change button text color to white when hovered */
 }
 
 /* Animation for fading in */
