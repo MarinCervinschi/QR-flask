@@ -16,11 +16,9 @@
         <div class="grid">
             {% for link in links %}
             <form class="links-grid" method="POST" action="">
-                <input type="hidden" name="action" id="action">
-                <input type="hidden" name="id" value="{{ link.id }}">
-                <div class="grid-element" id="">{{link.id}}</div>
-                <div class="grid-element">{{link.internal}}</div>
-                <div class="grid-element" id="hidden">{{link.external}}</div>
+                <input type="text" class="grid-element" id="id" name="id" value="{{ link.id }}">
+                <input type="button" class="grid-element" id="internal" name="internal" value="{{link.internal}}">
+                <input type="button" class="grid-element" id="external" name="external" value="{{link.external}}">
                 <button type="submit" class="grid-button" style="background-color: red;" data-action="/delete">
                     <i class='bx bx-trash-alt'></i>
                 </button>
@@ -58,10 +56,15 @@
     document.addEventListener("DOMContentLoaded", function () {
         // Select all forms in the page
         const forms = document.querySelectorAll('.links-grid');
+        let isEditing = false; 
 
         // Loop through each form
         forms.forEach(form => {
             const buttons = form.querySelectorAll('.grid-button');
+            const editButton = form.querySelector('button[data-action="/edit"]');
+            const externalInput = form.querySelector('input[name="external"]');
+            const pencilIcon = editButton.querySelector('i');
+            isEditing = false;
 
             buttons.forEach(button => {
                 button.addEventListener('click', function (e) {
@@ -78,8 +81,39 @@
                         // Submit the form after confirmation
                         form.submit();
                     }
+
+                    if (action === '/edit') {
+                        if (!isEditing) {
+                            // Modalità modifica - Cambia icona e tipo di input
+                            pencilIcon.classList.remove('bx-pencil');
+                            pencilIcon.classList.add('bx-check-square');
+                            externalInput.type = 'text';  // Rendi il campo modificabile
+                            externalInput.focus();
+                            const textLength = externalInput.value.length;
+                            externalInput.setSelectionRange(textLength, textLength);
+                            
+                            editButton.style.backgroundColor = "#8fc0a9"
+                            editButton.style.color = "#000";
+                            // Imposta lo stato di editing
+                            isEditing = true;
+                        } else {
+                            // Imposta lo stato di non editing
+                            isEditing = false;
+
+                            if (confirm('Are you sure you want to edit?')) {
+                                // Submit the form after confirmation
+                                form.submit();
+                            }
+                        }
+                    }
                 });
             });
+        });
+
+        document.addEventListener('click', function(e) {
+            if (isEditing && !e.target.closest('.links-grid')) {
+                alert("You are in edit mode. If you want to save, click the 'check' button!");
+            }
         });
     });
 </script>

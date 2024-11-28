@@ -101,6 +101,30 @@ def delete():
     return redirect(url_for('auth.dashboard.dashboard'))
 
 
-    
+@bp.route('/edit', methods=['POST'])
+def edit():
+    id = request.form.get('id')
+    print(id)
+    external_value = request.form['external']
 
+    try:
+        db = get_db()
+        cur = db.cursor()
+
+        cur.execute("UPDATE dynamic_links SET external = %s WHERE id = %s", (external_value, id,))
+        db.commit()
+
+        # flash('Link updated successfully!', 'success')
+    except Exception as e:
+        db.rollback()
+        flash(f"An error occurred while updating the link: {e}", 'error')
+    finally:
+        cur.close()
+
+    # Reindirizza all'area desiderata dopo l'aggiornamento
+    return redirect(url_for('auth.dashboard.dashboard'))
+
+@bp.route('/edit', methods=['POST'])
+def qr():
+    
     
