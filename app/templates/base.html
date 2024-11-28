@@ -6,6 +6,10 @@
     <title>QR Flask App</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    {% if css_file is not none %}
+        <link rel="stylesheet" href="{{ url_for('static', filename=css_file) }}">
+    {% endif %}
 </head>
 <body>
     <header>

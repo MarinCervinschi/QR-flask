@@ -31,7 +31,7 @@ def get_links():
 
 @bp.route('/')
 def dashboard():
-    return render_template('auth/dashboard.html', links=get_links())
+    return render_template('auth/dashboard.html', links=get_links(), css_file="dashboard.css")
 
 def add_link(internal, external):
     try:
