@@ -1,7 +1,17 @@
 from flask import Blueprint, render_template, redirect, flash
 
 from ..db import get_db
-from .auth import json_data
+
+def json_data(description, data):
+    if data is None or description is None:
+        return None
+
+    data = [data] if not isinstance(data[0], tuple) else data
+
+    columns = [column[0] for column in description]
+    return [dict(zip(columns, row)) for row in data]
+
+__all__ = ['json_data']
 
 bp = Blueprint('main', __name__)
 
@@ -15,18 +25,15 @@ def custom_route(string):
         db = get_db()
         cur = db.cursor()
         cur.execute("SELECT * FROM dynamic_links WHERE internal = %s", (string,))
-        description = cur.description
-        check = cur.fetchone()
+        external_link = json_data(cur.description, cur.fetchone())
     except Exception as e:
         flash(f"An error occurred nh: {e}")
-        check = None
+        external_link = None
     finally:
         cur.close()
 
-    if check is not None:
-        external_link = json_data(description, [check])[0]['external']
-        print(external_link)
-        return redirect(f'http://{external_link}') 
+    if external_link is not None:
+        return redirect(f'http://{external_link[0]["external"]}') 
 
     return render_template('error.html', error="404")
 

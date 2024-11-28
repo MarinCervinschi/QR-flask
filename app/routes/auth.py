@@ -2,32 +2,25 @@ from flask import (
     Blueprint, g, flash, render_template, request, redirect, url_for, session)
 
 from ..db import get_db
+from .main import json_data
 
 from werkzeug.security import check_password_hash
 
 bp = Blueprint('auth', __name__, url_prefix='/private')
-
-def json_data(description, data):
-    columns = [column[0] for column in description]
-    return [dict(zip(columns, row)) for row in data]
 
 def get_user(username):
     try:
         db = get_db()
         cur = db.cursor()
         cur.execute("SELECT * FROM users WHERE username = %s", (username,))
-        description = cur.description
-        user = cur.fetchone()
+        user = json_data(cur.description, cur.fetchone())
     except Exception as e:
         flash(f"An error occurred: {e}", "error")
         user = None
     finally:
         cur.close()
 
-    if user is not None:
-        user = json_data(description, [user])
-
-    return user
+    return user[0] if user is not None else None
 
 @bp.route('/admin', methods=['GET', 'POST'])
 def admin():
@@ -40,12 +33,12 @@ def admin():
 
         if user is None:
             error = 'Incorrect username.'
-        elif not check_password_hash(user[0]['password'], password):
+        elif not check_password_hash(user['password'], password):
             error = 'Incorrect password.'
 
         if error is None:
             session.clear()
-            session['user_id'] = user[0]['id']
+            session['user_id'] = user['id']
             flash("Authentication successful", "success")
             return redirect(url_for('auth.dashboard.dashboard'))
 
@@ -70,15 +63,15 @@ def load_logged_in_admin():
             g.user = json_data(description, [user])[0]
         except Exception as e:
             flash(f"An error occurred: {e}", "error")
+
             g.user = None
         finally:
             cur.close()
 
 @bp.route('/logout', methods=['POST'])
 def logout():
-    if request.method == 'POST':
-        session.clear()
-        return redirect(url_for('auth.admin'))
+    session.clear()
+    return redirect(url_for('auth.admin'))
 
 from . import dashboard
 bp.register_blueprint(dashboard.bp)
