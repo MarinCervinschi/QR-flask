@@ -239,13 +239,12 @@ main {
 
 }
 
+/* Flash message container */
 .flash {
     position: fixed;
     bottom: 20px;
     right: 20px;
     padding: 15px 25px;
-    background-color: #db2619; /* Rosso intenso */
-    color: white;
     border-radius: 10px;
     font-size: 1rem;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
@@ -256,28 +255,40 @@ main {
     gap: 15px;
     animation: fade-in 0.5s ease-out;
     z-index: 9999;
+    background-color: white;
+    transition: opacity 1s ease-out; 
 }
 
+/* Flash success message */
+.flash.success {
+    border: 3px solid #28a745; /* Green background */
+    color: #28a745;
+}
+
+/* Flash error message */
+.flash.error {
+    border: 3px solid #db2619; /* Intense red background */
+    color: #db2619;
+}
+
+/* Flash message text */
 .flash p {
     margin: 0;
     font-weight: bold;
 }
 
-.flash button {
-    background-color: white;
-    color: #f44336;
-    border: none;
-    border-radius: 10px;
-    padding: 6px 10px;
-    font-size: 0.7rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: transform 0.6s;
+/* Animation for fading in */
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-.flash button:hover {
-    transform: scale(1.1);
-}
 
 @media screen and (max-width: 540px) {
     header {
