@@ -14,7 +14,7 @@
         <div class="grid">
             {% for link in links %}
             <form class="links-grid" method="POST" action="">
-                <input type="text" class="grid-element" name="id" value="{{ link.id }}">
+                <input type="button" class="grid-element" name="id" value="{{ link.id }}">
                 <a class="grid-element" href="http://{{link.external}}">{{link.internal}}</a>
                 <input type="button" class="grid-element" style="padding: 15px 40px 15px;" name="external" value="{{link.external}}">
                 <button type="submit" class="grid-button" style="background-color: red;" data-action="/delete">

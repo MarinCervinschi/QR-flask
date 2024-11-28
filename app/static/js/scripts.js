@@ -29,6 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const editButton = form.querySelector('button[data-action="/edit"]'); // Edit button
         const externalInput = form.querySelector('input[name="external"]'); // Input field for editing
         const pencilIcon = editButton.querySelector('i'); // Icon inside edit button
+        const idInput = form.querySelector('input[name="id"]');
 
         buttons.forEach(button => {
             button.addEventListener('click', function (e) {
@@ -40,6 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (action === '/delete') {
                     // Handle delete action with confirmation
                     if (confirm('Are you sure you want to remove?')) {
+                        idInput.type = "text"
                         form.submit(); // Submit form after confirmation
                     }
                 } else if (action === '/edit') {
@@ -62,6 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     } else {
                         // Confirm exiting edit mode
                         if (confirm('Are you sure you want to save the changes?')) {
+                            idInput.type = 'text'; 
                             form.submit(); // Submit form after confirmation
                         }
                         isEditing = false; // Reset editing state
