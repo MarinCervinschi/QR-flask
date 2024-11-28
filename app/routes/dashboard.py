@@ -37,6 +37,8 @@ def dashboard():
     return render_template('auth/dashboard.html', links=get_links())
 
 def add_link(internal, external):
+    external = external.replace("http://", "").replace("https://", "")
+
     try:
         db = get_db()
         cur = db.cursor()
@@ -159,7 +161,7 @@ def qr():
     
     url = 'http://127.0.0.1:5000/' + link['internal']
     print(url)
-    filename = f"{link['internal']}_to_l.png"
+    filename = f"{link['internal']}_to_{link['external']}.png"
 
     try:
         img = qrcode.make(url)
