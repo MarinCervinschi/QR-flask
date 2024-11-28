@@ -71,6 +71,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 } else if (action === '/qr') {
                     // Handle add action
+                    idInput.type = 'text';
                     form.submit(); // Submit form
                 }
             });

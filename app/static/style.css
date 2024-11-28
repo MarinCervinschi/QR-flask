@@ -1,9 +1,8 @@
 :root {
     --bg-color: white;
     --text-color: black;
-    --primary-color: #4a7c59;
-    --details-color: #8fc0a9;
-    --details2-color: #b1d3c4;
+    --primary-color: rgb(34,193,195);
+    --gradient-bg: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(45,182,253,1) 100%);
 }
 
 *::-webkit-scrollbar {
@@ -19,7 +18,7 @@ body {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    background-color: var(--bg-color);
+    background: var(--gradient-bg);
     font-family: sans-serif;
 
     display: flex;
@@ -37,16 +36,22 @@ header {
 }
 
 header h2 {
-    color: var(--text-color);
+    color: var(--bg-color);
     font-size: 1.3rem;
     font-weight: 500;
     text-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+
+    box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
+    cursor: pointer;
+    border-radius: 14px;
+    padding: 8px;
    
 }
 
 header span {
-    color: var(--primary-color);
+    color: #93ebeb;
     font-weight: bolder;
+    
 }
 header img {
     margin: 20px 20px 0;
@@ -54,7 +59,6 @@ header img {
 }
 
 footer {
-    background-color: var(--primary-color);
     text-align: center;
     padding: 5px 0;
     color: white;
@@ -91,7 +95,15 @@ main {
     border-radius: 20px;
 }
 
-.container h2, .form-container h2 {
+.container h1 {
+    font-size: 3rem;
+    margin: 20px 20px 0;
+    color: var(--bg-color);
+    	
+    text-shadow: 2px 4px 3px rgba(0,0,0,0.3);
+}
+
+.form-container h2 {
     font-size: 2.5rem;
     margin: 20px 20px 0;
     color: var(--primary-color);
@@ -100,19 +112,21 @@ main {
 .sign-in-button {
     padding: 15px 30px;
     background-color: rgba(255, 255, 255, 0.316);
-    border: 3px solid var(--primary-color);
+    border: 3px solid var(--bg-color);
     border-radius: 30px;
     cursor: pointer;
     font-size: 1rem;
     font-weight: bold;
     text-decoration: none;
-    color: var(--primary-color);
-    transition: background-color 0.3s;
-}
+    color: var(--bg-color);
+    transition: background-color 0.9s;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em, rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
 
-.sign-in-button:hover {
-    background-color: var(--primary-color);
-    color: white;
+    &:hover {
+        background-color: var(--primary-color);
+        border: 3px solid var(--primary-color);
+        color: white;
+    }
 }
 
 .form-container {
@@ -146,6 +160,11 @@ main {
     border: 2px solid var(--primary-color);
     padding: 12px;
     border-radius: 30px;
+
+    &:focus {
+        outline: none;
+        border: 2px solid #2cb6fb;
+    }
 }
 
 .form-container button {
@@ -162,7 +181,7 @@ main {
 }
 
 .form-container button:hover{
-    background-color: var(--details2-color);
+    background-color: #e9fbfb;
     border: 3px solid var(--primary-color);
     color: var(--primary-color);
 }
@@ -189,7 +208,7 @@ main {
 
         >i {
             font-size: 1.2rem;
-            color: #4a7c59;
+            color: var(--primary-color);
             font-weight: bold;
         }
 
@@ -207,4 +226,5 @@ main {
             transform: scale(0.95);
           }
       }
+
 }
