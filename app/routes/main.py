@@ -27,8 +27,8 @@ def custom_route(string):
         external_link = json_data(description, [check])[0]['external']
         return redirect(external_link) 
 
-    return render_template('status.html', status="404")
+    return render_template('error.html', error="404")
 
 @bp.app_errorhandler(404)
 def page_not_found(error):
-    return render_template('status.html', status="404"), 404
+    return render_template('error.html', error="404"), 404

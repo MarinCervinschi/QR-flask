@@ -9,7 +9,7 @@ bp = Blueprint('dashboard', __name__, url_prefix='/dashboard')
 @bp.before_request
 def check_admin():
     if g.user is None:
-        return render_template('status.html', status='401'), 401
+        return render_template('error.html', error='401'), 401
 
 def get_links():
     try:
