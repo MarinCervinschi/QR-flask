@@ -21,7 +21,7 @@ def get_links():
         cur.execute("SELECT * FROM dynamic_links")
         links = json_data(cur.description, cur.fetchall())
     except Exception as e:
-        flash(f"An error occurred: {e}")
+        flash(f"An error occurred: {e}", "error")
         links = None
     finally:
         cur.close()
@@ -53,7 +53,7 @@ def get_internal(internal):
         cur.execute("SELECT * FROM dynamic_links WHERE internal = %s", (internal,))
         internal = json_data(cur.description, cur.fetchone())
     except Exception as e:
-        flash(f"An error occurred: {e}")
+        flash(f"An error occurred: {e}", "error")
         internal = None
     finally:
         cur.close()
@@ -75,10 +75,11 @@ def add():
     if error is None:
         try:
             add_link(internal, external)
+            flash('Link added successfully!', 'success')
         except Exception as e:
             flash(f"An unexpected error occurred: {e}", "error")
     else:
-        flash(error), 500
+        flash(error, "error"), 500
         
     return redirect(url_for('auth.dashboard.dashboard'))
 
@@ -90,6 +91,7 @@ def delete():
         cur = db.cursor()
         cur.execute("DELETE FROM dynamic_links WHERE id = %s", (id,))
         db.commit()
+        flash('Link deleted successfully!', 'success')
     except Exception as e:
         flash(f"An error occurred while deleting: {e}", "error")
     finally:
@@ -110,7 +112,7 @@ def edit():
         cur.execute("UPDATE dynamic_links SET external = %s WHERE id = %s", (external_value, id,))
         db.commit()
 
-        # flash('Link updated successfully!', 'success')
+        flash('Link updated successfully!', 'success')
     except Exception as e:
         db.rollback()
         flash(f"An error occurred while updating the link: {e}", 'error')
@@ -128,7 +130,7 @@ def get_link(id):
         cur.execute("SELECT * FROM dynamic_links WHERE id = %s", (id,))
         link = json_data(cur.description, cur.fetchone())
     except Exception as e:
-        flash(f"An error occurred: {e}")
+        flash(f"An error occurred: {e}", "error")
         link = None
     finally:
         cur.close()

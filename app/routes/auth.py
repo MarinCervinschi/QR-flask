@@ -71,6 +71,7 @@ def load_logged_in_admin():
 @bp.route('/logout', methods=['POST'])
 def logout():
     session.clear()
+    flash("Logout successful", "success")
     return redirect(url_for('auth.admin'))
 
 from . import dashboard
