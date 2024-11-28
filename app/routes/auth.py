@@ -19,7 +19,7 @@ def get_user(username):
         description = cur.description
         user = cur.fetchone()
     except Exception as e:
-        flash(f"An error occurred: {e}")
+        flash(f"An error occurred: {e}", "error")
         user = None
     finally:
         cur.close()
@@ -46,9 +46,10 @@ def admin():
         if error is None:
             session.clear()
             session['user_id'] = user[0]['id']
+            flash("Authentication successful", "success")
             return redirect(url_for('auth.dashboard.dashboard'))
 
-        flash(error)
+        flash(error, "error")
     if g.user is not None:
         return redirect(url_for('auth.dashboard.dashboard'))
     return render_template('auth/admin.html')
@@ -68,7 +69,7 @@ def load_logged_in_admin():
             user = cur.fetchone()
             g.user = json_data(description, [user])[0]
         except Exception as e:
-            flash(f"An error occurred: {e}")
+            flash(f"An error occurred: {e}", "error")
             g.user = None
         finally:
             cur.close()
