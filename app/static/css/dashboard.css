@@ -183,20 +183,16 @@
     .links-grid-wrapper {
         max-width: 90%;
     }
-
-    .form-container {
-        max-width: 40%;
-    }
 }
 
 /* Adattamenti per dispositivi piccoli (tablet e smartphone) */
-@media (max-width: 768px) {
+@media (max-width: 540px) {
     .links-grid-wrapper {
         max-width: 80%;
     }
 
     .links-header {
-        grid-template-columns: 10% 30% 60%;
+        grid-template-columns: 10% 30% 50% 5%;
         padding: 0.5rem 1rem 0.5rem;
         gap: 0.5rem;
         font-size: 0.9rem;
@@ -204,7 +200,7 @@
 
     .links-grid {
         grid-template-columns: 10% 25% 60%;
-        padding: 1rem;
+        padding: 0.5rem 0 0.5rem;
         gap: 0.5rem;
         font-size: 0.9rem;
     }
@@ -216,19 +212,26 @@
 
     .grid-button, .space {
         display: none;
-    }
-
-    .form-container {
-        margin-bottom: 50px;
-    }    
+    } 
 }
 
 /* Adattamenti per dispositivi molto piccoli */
 @media (max-width: 480px) {
-    .links-header, .links-grid {
-        grid-template-columns: 10% 85%;
+    
+    .grid{
+        height: 50vh;
+    }
+
+    .links-header{
+        grid-template-columns: 10% 75% 10%;
+        font-size: 0.8rem;
+    }
+    
+    .links-grid {
+        grid-template-columns: 15% 80%;
         gap: 0.3rem;
         font-size: 0.8rem;
+        padding: 0.5rem 0 0.5rem;
     }
 
     .grid-button {
@@ -240,24 +243,6 @@
     .links-header div,
     .grid-element {
         padding: 0.5rem;
-    }
-
-    .form-container {
-        max-width: 80%;
-    }
-
-    .form-container h2 {
-        font-size: 2rem;
-    }
-
-    .form-container button {
-        font-size: 0.9rem;
-        padding: 8px;
-    }
-
-    .form-section input {
-        padding: 10px;
-        font-size: 0.85rem;
     }
 
     #hidden {
