@@ -1,8 +1,11 @@
 from flask import (
-    Blueprint, flash, render_template, g, request, redirect, url_for)
+    Blueprint, flash, render_template, g, request, redirect, url_for, send_file)
 
 from ..db import get_db
 from .auth import json_data
+
+import qrcode
+import io
 
 bp = Blueprint('dashboard', __name__, url_prefix='/dashboard')
 
@@ -104,7 +107,6 @@ def delete():
 @bp.route('/edit', methods=['POST'])
 def edit():
     id = request.form.get('id')
-    print(id)
     external_value = request.form['external']
 
     try:
@@ -124,8 +126,50 @@ def edit():
     # Reindirizza all'area desiderata dopo l'aggiornamento
     return redirect(url_for('auth.dashboard.dashboard'))
 
+
+def get_link(id):
+    try:
+        db = get_db()
+        cur = db.cursor()
+        cur.execute("SELECT * FROM dynamic_links WHERE id = %s", (id,))
+        description = cur.description
+        link = cur.fetchone()
+    except Exception as e:
+        flash(f"An error occurred: {e}")
+        link = None
+    finally:
+        cur.close()
+
+    if link is not None:
+        link = json_data(description, [link])[0]
+
+    return link
+
 @bp.route('/qr', methods=['POST'])
 def qr():
-    pass
+    id = request.form['id']
+    if id is None:
+        flash("An error occurred: no id provided", "error")
+        return redirect(url_for('auth.dashboard.dashboard'))
     
+    link = get_link(id)
+    if link is None:
+        flash("An error occurred: no link found", "error")
+        return redirect(url_for('auth.dashboard.dashboard'))
+    
+    url = 'http://127.0.0.1:5000/' + link['internal']
+    print(url)
+    filename = f"{link['internal']}_to_l.png"
+
+    try:
+        img = qrcode.make(url)
+        img_io = io.BytesIO()
+        img.save(img_io, 'PNG')
+        img_io.seek(0)
+
+        return send_file(img_io, mimetype='image/png', as_attachment=True, download_name=filename)
+    except Exception as e:
+        flash(f"An error occurred while generating the QR code: {e}", "error")
+    
+    return redirect(url_for('auth.dashboard.dashboard'))
     

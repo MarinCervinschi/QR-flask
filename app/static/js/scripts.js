@@ -66,6 +66,9 @@ document.addEventListener("DOMContentLoaded", function () {
                         }
                         isEditing = false; // Reset editing state
                     }
+                } else if (action === '/qr') {
+                    // Handle add action
+                    form.submit(); // Submit form
                 }
             });
         });
