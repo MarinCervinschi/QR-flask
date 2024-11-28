@@ -25,7 +25,8 @@ def custom_route(string):
 
     if check is not None:
         external_link = json_data(description, [check])[0]['external']
-        return redirect(external_link) 
+        print(external_link)
+        return redirect(f'http://{external_link}') 
 
     return render_template('error.html', error="404")
 
