@@ -8,25 +8,27 @@
                 <div id="hidden">EXTERNAL</div>
                 <div class="space"></div>
                 <button id="add_button" class="add"><i class='bx bx-add-to-queue' ></i></button>
-            </div>
-            <div class="links-grid">
-                {% for link in links %}
-                    <div class="grid-element">{{link.id}}</div>
-                    <div class="grid-element">{{link.internal}}</div>
-                    <div class="grid-element" id="hidden">{{link.external}}</div>
-                    <button class="grid-button" style="background-color: red;">
-                        <i class='bx bx-trash-alt'></i>
-                    </button>
-                    <button class="grid-button" style="background-color: green;">
-                        <i class='bx bx-pencil'></i>
-                    </button>
-                    <button class="grid-button" style="background-color: blue;">
-                        <i class='bx bx-qr-scan' ></i>
-                    </button>
-                {% endfor %}
-            </div>
+            </div>       
+                             
+        <div class="grid">
+            {% for link in links %}
+            <form class="links-grid" method="POST" action="">
+                <input type="text" class="grid-element" id="id" name="id" value="{{ link.id }}">
+                <input type="button" class="grid-element" id="internal" name="internal" value="{{link.internal}}">
+                <input type="button" class="grid-element" id="external" name="external" value="{{link.external}}">
+                <button type="submit" class="grid-button" style="background-color: red;" data-action="/delete">
+                    <i class='bx bx-trash-alt'></i>
+                </button>
+                <button type="submit" class="grid-button" style="background-color: green;" data-action="/edit">
+                    <i class='bx bx-pencil'></i>
+                </button>
+                <button type="submit" class="grid-button" style="background-color: blue;" data-action="/qr">
+                    <i class='bx bx-qr-scan'></i>
+                </button>
+            </form>
+            {% endfor %}
         </div>
-        
+      
         <div class="popUp" id="add_form">
             <div class="form-container">
                 <span id="close_button" class="close-popup-btn">&times;</span>
@@ -46,4 +48,70 @@
         </div>
     </div>
     <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+    
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Select all forms in the page
+        const forms = document.querySelectorAll('.links-grid');
+        let isEditing = false; 
+
+        // Loop through each form
+        forms.forEach(form => {
+            const buttons = form.querySelectorAll('.grid-button');
+            const editButton = form.querySelector('button[data-action="/edit"]');
+            const externalInput = form.querySelector('input[name="external"]');
+            const pencilIcon = editButton.querySelector('i');
+            isEditing = false;
+
+            buttons.forEach(button => {
+                button.addEventListener('click', function (e) {
+                    // Prevent the default form submission
+                    e.preventDefault();
+
+                    // Set the form's action to the data-action of the clicked button
+                    const action = button.getAttribute('data-action');
+                    form.setAttribute('action', '/private/dashboard' + action);
+                    console.log(action);
+
+                    // Confirm the action
+                    if (button.getAttribute('data-action') === '/delete' && confirm('Are you sure you want to remove?')) {
+                        // Submit the form after confirmation
+                        form.submit();
+                    }
+
+                    if (action === '/edit') {
+                        if (!isEditing) {
+                            // Modalità modifica - Cambia icona e tipo di input
+                            pencilIcon.classList.remove('bx-pencil');
+                            pencilIcon.classList.add('bx-check-square');
+                            externalInput.type = 'text';  // Rendi il campo modificabile
+                            externalInput.focus();
+                            const textLength = externalInput.value.length;
+                            externalInput.setSelectionRange(textLength, textLength);
+                            
+                            editButton.style.backgroundColor = "#8fc0a9"
+                            editButton.style.color = "#000";
+                            // Imposta lo stato di editing
+                            isEditing = true;
+                        } else {
+                            // Imposta lo stato di non editing
+                            isEditing = false;
+
+                            if (confirm('Are you sure you want to edit?')) {
+                                // Submit the form after confirmation
+                                form.submit();
+                            }
+                        }
+                    }
+                });
+            });
+        });
+
+        document.addEventListener('click', function(e) {
+            if (isEditing && !e.target.closest('.links-grid')) {
+                alert("You are in edit mode. If you want to save, click the 'check' button!");
+            }
+        });
+    });
+</script>
 {% endblock %}
