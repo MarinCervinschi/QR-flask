@@ -29,12 +29,16 @@
     <main>
         {% block content %}
         {% endblock %}
-        {% for message in get_flashed_messages() %}
-            <div class="flash">
-                <p>{{ message }}</p>
-                <button onclick="hideFlash()">OK</button>
-            </div>
-        {% endfor %}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="flash {{ category }}"> 
+                    <p>{{ message|capitalize }} </p>
+                    <button onclick="hideFlash()">OK</button>
+                </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
     </main>
     <script>
         function hideFlash() {
