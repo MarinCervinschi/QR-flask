@@ -33,7 +33,7 @@
 
         <div class="form-container">
             <h2>Add link</h2>
-            <form>
+            <form method="POST" action="/private/dashboard">
                 <div class="form-section">
                     <label for="internal">Internal</label>
                     <input type="text" id="internal" name="internal" required>
@@ -49,4 +49,5 @@
     <form  action="/private/logout" method="POST">
         <button class="logout" type="submit">Logout</button>
     </form>
+    
 {% endblock %}
