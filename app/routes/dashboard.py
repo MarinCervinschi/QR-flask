@@ -34,7 +34,7 @@ def get_links():
 
 @bp.route('/')
 def dashboard():
-    return render_template('auth/dashboard.html', links=get_links(), css_file="dashboard.css")
+    return render_template('auth/dashboard.html', links=get_links(), css_file="css/dashboard.css")
 
 def add_link(internal, external):
     external = external.replace("http://", "").replace("https://", "")
