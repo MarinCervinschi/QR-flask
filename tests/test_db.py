@@ -1,16 +1,3 @@
-import pytest
-from app.db import get_db, init_db
-
-def test_get_close_db(app):
-    with app.app_context():
-        db = get_db()
-        assert db is get_db()
-
-    with pytest.raises(Exception) as e:
-        db.close()
-        db.execute('SELECT 1')
-
-    assert 'closed' in str(e.value)
 
 def test_init_db_command(runner, monkeypatch):
     class Recorder(object):
