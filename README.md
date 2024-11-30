@@ -28,6 +28,25 @@
 
 2. Open your web browser and go to `http://127.0.0.1:5000`.
 
+## Testing
+
+1. Run tests using pytest:
+    ```bash
+    pytest
+    ```
+
+3. Generate a coverage report:
+    ```bash
+    coverage run -m pytest
+    coverage report
+    ```
+
+4. To generate an HTML coverage report:
+    ```bash
+    coverage html
+    ```
+    Open `htmlcov/index.html` in your web browser to view the report.
+
 ## Contributing
 
 Contributions are welcome! Please open an issue or submit a pull request.
