@@ -35,7 +35,6 @@ def query_db(query, args=(), one=False, commit=False):
         if commit:
             get_db().rollback()
             return
-        results = None
         raise
     finally:
         cur.close()
@@ -43,7 +42,7 @@ def query_db(query, args=(), one=False, commit=False):
     if commit:
         return
 
-    return (results[0] if results is not None else None) if one else results
+    return (results[0] if results else None) if one else results
 
 def init_db():
     """Initialize the database by executing the schema."""
