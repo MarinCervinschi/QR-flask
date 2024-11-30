@@ -1,19 +1,48 @@
 from flask_mysqldb import MySQL
-from flask import current_app, g
+from flask import current_app
 import click
 import os
 
 mysql = MySQL()
 
 def get_db():
-    """Get a database connection, initializing it if not already set in the app context."""
-    if 'db' not in g:
-        try:
-            g.db = mysql.connection
-        except Exception as e:
-            current_app.logger.error(f"Failed to connect to the database: {e}")
-            raise
-    return g.db
+    """Get a database connection."""
+    try:
+        db = mysql.connection
+    except Exception as e:
+        current_app.logger.error(f"Failed to connect to the database: {e}")
+        raise
+    return db
+
+def json_data(description, data):
+    if not data or not description:
+        return None
+
+    data = [data] if not isinstance(data[0], tuple) else data
+
+    columns = [column[0] for column in description]
+    return [dict(zip(columns, row)) for row in data]
+
+def query_db(query, args=(), one=False, commit=False):
+    try:
+        cur = get_db().cursor()
+        cur.execute(query, args)
+        results = json_data(cur.description, cur.fetchall())
+        if commit:
+            get_db().commit()
+    except Exception as e:
+        current_app.logger.error(f"Query failed: {e}")
+        if commit:
+            get_db().rollback()
+            return
+        raise
+    finally:
+        cur.close()
+
+    if commit:
+        return
+
+    return (results[0] if results else None) if one else results
 
 def init_db():
     """Initialize the database by executing the schema."""

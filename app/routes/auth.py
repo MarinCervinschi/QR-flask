@@ -1,26 +1,21 @@
 from flask import (
-    Blueprint, g, flash, render_template, request, redirect, url_for, session, abort)
+    Blueprint, g, flash, render_template, request, redirect, url_for, session)
 
-from ..db import get_db
-from .main import json_data
+from ..db import query_db
 
-from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.security import check_password_hash
 
 bp = Blueprint('auth', __name__, url_prefix='/private')
 
 def get_user(username):
     try:
-        db = get_db()
-        cur = db.cursor()
-        cur.execute("SELECT * FROM users WHERE username = %s", (username,))
-        user = json_data(cur.description, cur.fetchone())
+        query = "SELECT * FROM users WHERE username = %s"
+        user = query_db(query, (username,), one=True)
     except Exception as e:
         flash(f"An error occurred: {e}", "error")
         user = None
-    finally:
-        cur.close()
 
-    return user[0] if user is not None else None
+    return user
 
 @bp.route('/admin', methods=['GET', 'POST'])
 def admin():
@@ -48,7 +43,6 @@ def admin():
     if g.user is not None:
         return redirect(url_for('auth.dashboard.dashboard'))
     
-    print(generate_password_hash("password"))
     return render_template('auth/admin.html')
 
 @bp.before_app_request
@@ -59,18 +53,11 @@ def load_logged_in_admin():
         g.user = None
     else:
         try:
-            db = get_db()
-            cur = db.cursor()
-            cur.execute("SELECT * FROM users WHERE id = %s", (user_id,))
-            description = cur.description
-            user = cur.fetchone()
-            g.user = json_data(description, [user])[0]
+            query = "SELECT * FROM users WHERE id = %s"
+            g.user = query_db(query, (user_id,), one=True)
         except Exception as e:
             flash(f"An error occurred: {e}", "error")
-
             g.user = None
-        finally:
-            cur.close()
 
 @bp.route('/logout', methods=['POST'])
 def logout():
