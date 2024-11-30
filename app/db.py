@@ -1,5 +1,5 @@
 from flask_mysqldb import MySQL
-from flask import current_app, flash
+from flask import current_app
 import click
 import os
 
