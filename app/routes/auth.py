@@ -1,7 +1,7 @@
 from flask import (
     Blueprint, g, flash, render_template, request, redirect, url_for, session, abort)
 
-from ..db import get_db
+from ..db import get_db, query_db
 from .main import json_data
 
 from werkzeug.security import check_password_hash
@@ -10,17 +10,13 @@ bp = Blueprint('auth', __name__, url_prefix='/private')
 
 def get_user(username):
     try:
-        db = get_db()
-        cur = db.cursor()
-        cur.execute("SELECT * FROM users WHERE username = %s", (username,))
-        user = json_data(cur.description, cur.fetchone())
+        query = "SELECT * FROM users WHERE username = %s"
+        user = query_db(query, (username,), one=True)
     except Exception as e:
         flash(f"An error occurred: {e}", "error")
         user = None
-    finally:
-        cur.close()
 
-    return user[0] if user is not None else None
+    return user
 
 @bp.route('/admin', methods=['GET', 'POST'])
 def admin():
