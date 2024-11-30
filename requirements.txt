@@ -3,3 +3,4 @@ flask-mysqldb
 qrcode
 Pillow
 python-dotenv
+pytest
