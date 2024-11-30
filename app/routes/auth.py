@@ -1,8 +1,7 @@
 from flask import (
-    Blueprint, g, flash, render_template, request, redirect, url_for, session, abort)
+    Blueprint, g, flash, render_template, request, redirect, url_for, session)
 
-from ..db import get_db, query_db
-from .main import json_data
+from ..db import query_db
 
 from werkzeug.security import check_password_hash
 
