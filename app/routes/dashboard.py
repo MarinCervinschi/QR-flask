@@ -1,8 +1,7 @@
 from flask import (
     Blueprint, flash, render_template, g, request, redirect, url_for, send_file, current_app as app)
 
-from ..db import get_db
-from .main import json_data
+from ..db import query_db
 
 import qrcode
 import io
@@ -14,51 +13,39 @@ def check_admin():
     if g.user is None:
         return render_template('error.html', error='401'), 401
 
-def get_links():
-    try:
-        db = get_db()
-        cur = db.cursor()
-        cur.execute("SELECT * FROM dynamic_links")
-        links = json_data(cur.description, cur.fetchall())
-    except Exception as e:
-        flash(f"An error occurred: {e}", "error")
-        links = None
-    finally:
-        cur.close()
-
-    return links
-
 @bp.route('/')
 def dashboard():
     return render_template('auth/dashboard.html', links=get_links(), css_file="css/dashboard.css")
+
+def get_links():
+    try:
+        query = "SELECT * FROM dynamic_links"
+        links = query_db(query)
+    except Exception as e:
+        flash(f"An error occurred: {e}", "error")
+        links = None
+
+    return links
 
 def add_link(internal, external):
     external = external.replace("http://", "").replace("https://", "")
 
     try:
-        db = get_db()
-        cur = db.cursor()
-        cur.execute("INSERT INTO dynamic_links (internal, external) VALUES (%s, %s)", (internal, external))
-        db.commit()
+        query = "INSERT INTO dynamic_links (internal, external) VALUES (%s, %s)"
+        query_db(query, (internal, external), commit=True)
     except Exception as e:
-        flash(f"An error occurred while adding the link: {e}", "error")
-        db.rollback()
-    finally:
-        cur.close()
+        app.logger.error(f"An error occurred: {e}")
+        raise
 
 def get_internal(internal):
     try:
-        db = get_db()
-        cur = db.cursor()
-        cur.execute("SELECT * FROM dynamic_links WHERE internal = %s", (internal,))
-        internal = json_data(cur.description, cur.fetchone())
+        query = "SELECT * FROM dynamic_links WHERE internal = %s"
+        internal = query_db(query, (internal,), one=True)
     except Exception as e:
-        flash(f"An error occurred: {e}", "error")
+        app.logger.error(f"An error occurred: {e}")
         internal = None
-    finally:
-        cur.close()
 
-    return internal[0] if internal is not None else None
+    return internal
 
 @bp.route('/add', methods=['POST'])
 def add():
@@ -87,15 +74,12 @@ def add():
 def delete():
     id = request.form['id']
     try:    
-        db = get_db() 
-        cur = db.cursor()
-        cur.execute("DELETE FROM dynamic_links WHERE id = %s", (id,))
-        db.commit()
+        query = "DELETE FROM dynamic_links WHERE id = %s"
+        query_db(query, (id,), commit=True)
         flash('Link deleted successfully!', 'success')
     except Exception as e:
         flash(f"An error occurred while deleting: {e}", "error")
-    finally:
-        cur.close()
+        return redirect(url_for('auth.dashboard.dashboard')), 500
     
     return redirect(url_for('auth.dashboard.dashboard'))
 
@@ -106,48 +90,36 @@ def edit():
     external_value = request.form['external']
 
     try:
-        db = get_db()
-        cur = db.cursor()
-
-        cur.execute("UPDATE dynamic_links SET external = %s WHERE id = %s", (external_value, id,))
-        db.commit()
-
+        query = "UPDATE dynamic_links SET external = %s WHERE id = %s"
+        query_db(query, (external_value, id), commit=True)
         flash('Link updated successfully!', 'success')
     except Exception as e:
-        db.rollback()
         flash(f"An error occurred while updating the link: {e}", 'error')
-    finally:
-        cur.close()
+        return redirect(url_for('auth.dashboard.dashboard')), 500
 
-    # Reindirizza all'area desiderata dopo l'aggiornamento
     return redirect(url_for('auth.dashboard.dashboard'))
-
 
 def get_link(id):
     try:
-        db = get_db()
-        cur = db.cursor()
-        cur.execute("SELECT * FROM dynamic_links WHERE id = %s", (id,))
-        link = json_data(cur.description, cur.fetchone())
+        query = "SELECT * FROM dynamic_links WHERE id = %s"
+        link = query_db(query, (id,), one=True)
     except Exception as e:
-        flash(f"An error occurred: {e}", "error")
+        app.logger.error(f"An error occurred: {e}")
         link = None
-    finally:
-        cur.close()
 
-    return link[0] if link is not None else None
+    return link
 
 @bp.route('/qr', methods=['POST'])
 def qr():
     id = request.form['id']
     if id is None:
         flash("An error occurred: no id provided", "error")
-        return redirect(url_for('auth.dashboard.dashboard'))
+        return redirect(url_for('auth.dashboard.dashboard')), 500
     
     link = get_link(id)
     if link is None:
         flash("An error occurred: no link found", "error")
-        return redirect(url_for('auth.dashboard.dashboard'))
+        return redirect(url_for('auth.dashboard.dashboard')), 500
     
     url = app.config['APP_URL'] + link['internal']
     print(url)
@@ -162,6 +134,5 @@ def qr():
         return send_file(img_io, mimetype='image/png', as_attachment=True, download_name=filename)
     except Exception as e:
         flash(f"An error occurred while generating the QR code: {e}", "error")
-    
-    return redirect(url_for('auth.dashboard.dashboard'))
+        return redirect(url_for('auth.dashboard.dashboard')), 500
     
