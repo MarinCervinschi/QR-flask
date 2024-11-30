@@ -10,7 +10,22 @@ with open(os.path.join(os.path.dirname(__file__), 'data.sql'), 'rb') as f:
     _data_sql = f.read().decode('utf8')
 
 def init_test_db(app):
-    pass
+    init_db()
+    try:
+        db_test = get_db()
+        cur = db_test.cursor()
+
+        for command in _data_sql.split(';'):
+            if command.strip():
+                cur.execute(command)
+
+        db_test.commit()
+    except Exception as e:
+        db_test.rollback()
+        app.logger.error(f"Failed to initialize the database: {e}")
+        raise
+    finally:
+        cur.close()
 
 @pytest.fixture
 def app():
@@ -26,22 +41,7 @@ def app():
     })
 
     with app.app_context():
-        init_db()
-        try:
-            db_test = get_db()
-            cur = db_test.cursor()
-
-            for command in _data_sql.split(';'):
-                if command.strip():
-                    cur.execute(command)
-
-            db_test.commit()
-        except Exception as e:
-            db_test.rollback()
-            app.logger.error(f"Failed to initialize the database: {e}")
-            raise
-        finally:
-            cur.close()
+        init_test_db(app)
 
     yield app 
 
