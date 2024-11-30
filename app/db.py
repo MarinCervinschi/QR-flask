@@ -6,14 +6,13 @@ import os
 mysql = MySQL()
 
 def get_db():
-    """Get a database connection, initializing it if not already set in the app context."""
-    if 'db' not in g:
-        try:
-            g.db = mysql.connection
-        except Exception as e:
-            current_app.logger.error(f"Failed to connect to the database: {e}")
-            raise
-    return g.db
+    """Get a database connection."""
+    try:
+        db = mysql.connection
+    except Exception as e:
+        current_app.logger.error(f"Failed to connect to the database: {e}")
+        raise
+    return db
 
 def init_db():
     """Initialize the database by executing the schema."""

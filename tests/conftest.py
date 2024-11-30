@@ -21,7 +21,7 @@ def app():
         'MYSQL_PORT': int(os.getenv('MYSQL_PORT', 3306)),
         'MYSQL_USER': os.getenv('MYSQL_USER', 'root'),
         'MYSQL_PASSWORD': os.getenv('MYSQL_PASSWORD', 'root'),
-        'MYSQL_DB': os.getenv('MYSQL_DB', 'test_db')
+        'MYSQL_DB': 'test_db'
     })
 
     with app.app_context():

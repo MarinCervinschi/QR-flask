@@ -4,7 +4,7 @@ from flask import (
 from ..db import get_db
 from .main import json_data
 
-from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.security import check_password_hash
 
 bp = Blueprint('auth', __name__, url_prefix='/private')
 
@@ -48,7 +48,6 @@ def admin():
     if g.user is not None:
         return redirect(url_for('auth.dashboard.dashboard'))
     
-    print(generate_password_hash("password"))
     return render_template('auth/admin.html')
 
 @bp.before_app_request
