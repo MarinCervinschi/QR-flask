@@ -16,6 +16,7 @@ def init_test_db(app):
 def app():
     app = create_app({
         'TESTING': True,
+        'APP_URL': os.getenv('APP_URL', 'http://127.0.0.1:5000/'),
         'SECRET_KEY': os.getenv('SECRET_KEY', 'dev'),
         'MYSQL_HOST': os.getenv('MYSQL_HOST', '127.0.0.1'),
         'MYSQL_PORT': int(os.getenv('MYSQL_PORT', 3306)),
