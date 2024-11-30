@@ -17,27 +17,26 @@ def test_admin_success(client, auth):
     assert response.status_code == 302
     assert response.headers["Location"] == "/private/dashboard/"
 
-    with client:
-        client.get('/private/admin')
-
-        assert session['user_id'] is not None
-        assert g.user['username'] == 'test'
+    with client.session_transaction() as sess:
+        assert sess['user_id'] == 1
+        assert sess.permanent is True
 
 def test_admin_already_logged_in(client, auth):
     auth.admin()
 
-    with client:
-        response = client.get('/private/admin')
+    response = client.get('/private/admin')
 
-        assert response.status_code == 302
-        assert response.headers["Location"] == "/private/dashboard/"
+    assert response.status_code == 302
+    assert response.headers["Location"] == "/private/dashboard/"
 
 def test_logout(client, auth):
     auth.admin()
+    response  = auth.logout()
 
-    with client:
-        auth.logout()
-        # Verify session is cleared
-        assert 'user_id' not in session
-        response = client.get('/private/admin/')
-        assert b'Incorrect username.' not in response.data
+    with client.session_transaction() as sess:
+        assert response.status_code == 302
+        assert response.headers["Location"] == "/private/admin"
+        
+        assert 'user_id' not in sess
+        response = client.get('/private/dashboard/')
+        assert response.status_code == 401

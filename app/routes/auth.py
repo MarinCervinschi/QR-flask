@@ -33,6 +33,7 @@ def admin():
 
         if error is None:
             session.clear()
+            session.permanent = True
             session['user_id'] = user['id']
             flash("Authentication successful", "success")
             return redirect(url_for('auth.dashboard.dashboard'))

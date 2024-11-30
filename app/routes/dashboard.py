@@ -63,12 +63,12 @@ def add():
         try:
             add_link(internal, external)
             flash('Link added successfully!', 'success')
+            return redirect(url_for('auth.dashboard.dashboard'))
         except Exception as e:
-            flash(f"An unexpected error occurred: {e}", "error")
-    else:
-        flash(error, "error"), 500
+            error = f"An unexpected error occurred: {e}"
         
-    return redirect(url_for('auth.dashboard.dashboard'))
+    flash(error, "error")
+    return redirect(url_for('auth.dashboard.dashboard')), 500
 
 @bp.route('/delete', methods=['POST'])
 def delete():
