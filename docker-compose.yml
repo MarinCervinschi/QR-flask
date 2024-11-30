@@ -3,14 +3,43 @@ services:
     image: mysql:8.4
     container_name: qr-db
     restart: always
-    environment:
-      MYSQL_DATABASE: qr_db
-      MYSQL_ROOT_PASSWORD: root
+    env_file:
+      - .mysql.env
     volumes:
       - $HOME/database:/var/lib/mysql
-      # - C:/database:/var/lib/mysql # For Windows
       - ./schema.sql:/docker-entrypoint-initdb.d/0_init.sql
     ports:
-      - "3306:3306"
+      - 3306:3306
     expose:
-      - "3306"
+      - 3306
+    networks:
+      - qr-app-net
+
+  qr-app:
+    build: .
+    container_name: qr-app
+    restart: always
+    env_file:
+      - .flask.env
+    ports:
+      - 8000:8000
+    depends_on:
+      - qr-db
+    networks:
+      - qr-app-net
+      - nginx-proxy-net
+
+  nginx-proxy:
+    build: proxy
+    container_name: nginx-proxy
+    restart: always
+    ports:
+      - 80:80
+    depends_on:
+      - qr-app
+    networks:
+      - nginx-proxy-net
+
+networks:
+  qr-app-net:
+  nginx-proxy-net:
