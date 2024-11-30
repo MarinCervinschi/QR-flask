@@ -54,18 +54,11 @@ def load_logged_in_admin():
         g.user = None
     else:
         try:
-            db = get_db()
-            cur = db.cursor()
-            cur.execute("SELECT * FROM users WHERE id = %s", (user_id,))
-            description = cur.description
-            user = cur.fetchone()
-            g.user = json_data(description, [user])[0]
+            query = "SELECT * FROM users WHERE id = %s"
+            g.user = query_db(query, (user_id,), one=True)
         except Exception as e:
             flash(f"An error occurred: {e}", "error")
-
             g.user = None
-        finally:
-            cur.close()
 
 @bp.route('/logout', methods=['POST'])
 def logout():
