@@ -20,8 +20,8 @@ def test_dashboard_render(client, auth):
     auth.admin()
     response = client.get('/private/dashboard/')
     assert response.status_code == 200
-    assert b'internal1' in response.data
-    assert b'http://example1.com' in response.data
+    assert b'internal' in response.data
+    assert b'http://example.com' in response.data
 
 
 def test_add_link(client, auth):
@@ -42,7 +42,7 @@ def test_add_duplicate_link(client, auth):
     auth.admin()
     response = client.post(
         '/private/dashboard/add', 
-        data={'internal': 'internal1', 'external': 'http://duplicate.com'},
+        data={'internal': 'internal', 'external': 'http://duplicate.com'},
         follow_redirects=True
     )
     print(response.data)
