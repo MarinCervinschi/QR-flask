@@ -17,7 +17,7 @@ def test_check_admin_redirect(client, user_logged_in):
 
 
 def test_dashboard_render(client, auth):
-    auth.admin()  # Simulate admin login
+    auth.admin()
     response = client.get('/private/dashboard/')
     assert response.status_code == 200
     assert b'internal1' in response.data
@@ -30,9 +30,8 @@ def test_add_link(client, auth):
         '/private/dashboard/add', 
         data={'internal': 'internal3', 'external': 'http://example3.com'}
     )
-    assert response.status_code == 302  # Redirects back to the dashboard
+    assert response.status_code == 302 
 
-    # Verify new link in the database
     with client.application.app_context():
         result = query_db("SELECT * FROM dynamic_links WHERE internal = 'internal3'", one=True)
         assert result is not None
@@ -55,11 +54,9 @@ def test_delete_link(client, auth):
     response = client.post('/private/dashboard/delete', data={'id': '1'})
     assert response.status_code == 302
 
-    # Verify the link is deleted
     with client.application.app_context():
         result = query_db("SELECT * FROM dynamic_links WHERE id = 1", one=True)
         assert result is None
-
 
 def test_edit_link(client, auth):
     auth.admin()
