@@ -1,3 +1,7 @@
+<div align="left">
+  <img src="https://visitor-badge.laobi.icu/badge?page_id=MarinCervinschi.QR-Flask&"  />
+</div>
+
 # QR Flask Project
 
 ## Overview
@@ -186,7 +190,7 @@ Note: These `.env` files are included in .`gitignore` to protect sensitive data.
 
 1. Run tests using pytest:
     ```bash
-    pytest
+    python -m pytest
     ```
 
 3. Generate a coverage report:
