@@ -115,10 +115,10 @@ PERMANENT_SESSION_LIFETIME=30  # Session lifetime in minutes
 ### MySQL Environment Variables
 Create a `.mysql.env` file in the project root with the following content:
 ```bash
-MYSQL_ROOT_PASSWORD=your_root_password  # Root password
+MYSQL_ROOT_PASSWORD=root  # Root password
 MYSQL_HOST=qr-db  # Database host (e.g., service name in Docker or localhost)
 MYSQL_PORT=3306  # Database port
-MYSQL_PASSWORD=your_db_password  # User password
+MYSQL_PASSWORD=root  # User password
 MYSQL_DB=qr_db  # Database name
 ```
 Note: These `.env` files are included in .`gitignore` to protect sensitive data.
