@@ -27,19 +27,6 @@ services:
       - qr-db
     networks:
       - qr-app-net
-      - nginx-proxy-net
-
-  nginx-proxy:
-    build: proxy
-    container_name: nginx-proxy
-    restart: always
-    ports:
-      - 80:80
-    depends_on:
-      - qr-app
-    networks:
-      - nginx-proxy-net
 
 networks:
   qr-app-net:
-  nginx-proxy-net:
