@@ -15,7 +15,8 @@ def check_admin():
 
 @bp.route('/')
 def dashboard():
-    return render_template('auth/dashboard.html', links=get_links(), css_file="css/dashboard.css")
+    links = get_links()
+    return render_template('auth/dashboard.html', links=links if links else [], css_file="css/dashboard.css")
 
 def get_links():
     try:
