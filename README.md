@@ -89,6 +89,48 @@ Users scanning the QR codes will experience a direct redirection to the final li
     cd QR-flask
     ```
 
+### ON WINDOWS
+- First, change permissions for the `start.bat` & `stop.bat` files:
+```powershell
+icacls start.bat /grant Everyone:F
+```
+- Then, run the `start.bat` file to start the application:
+```powershell
+.\start.bat
+```
+- To stop the application, run the `stop.bat` file:
+```powershell
+.\stop.bat
+```
+---
+### ON UNIX
+- First, change permissions for the `start.sh` & `stop.sh` files:
+```bash
+chmod +x start.sh
+```
+- Then, run the `start.sh` file to start the application:
+```bash
+./start.sh
+```
+- To stop the application, run the `stop.sh` file:
+```bash
+./stop.sh
+```
+
+---
+> **⚠️ Important Warning:**
+> 
+> The `start.sh` and `start.bat` scripts create the `.flask.env` and `.mysql.env` files with default values. REMEMBER to change the default values in the `.env` files to secure your application.
+
+
+### Run Flask To Develop Locally
+
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/yourusername/QR-flask.git
+    cd QR-flask
+    ```
+
 2. Create a virtual environment:
     ```bash
     python3 -m venv venv
