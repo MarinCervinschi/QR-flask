@@ -28,12 +28,12 @@ Users scanning the QR codes will experience a direct redirection to the final li
 - [Testing](#testing)
 - [Deployment Structure](#deployment-structure)
 - [Deployment with Docker and Docker Compose](#deployment-with-docker-and-docker-compose)
-- [Project Structure](#project-structure)
 
 ## Project Structure
 
 ```plaintext
 .
+├── LICENSE
 ├── README.md
 ├── app
 │   ├── __init__.py
@@ -61,14 +61,6 @@ Users scanning the QR codes will experience a direct redirection to the final li
 │       ├── base.html
 │       ├── error.html
 │       └── index.html
-├── run.py
-├── requirements.txt
-├── schema.sql
-├── Dockerfile
-├── docker-compose.yml
-├── proxy
-│   ├── Dockerfile
-│   └── conf
 └── tests
     ├── conftest.py
     ├── data.sql
@@ -77,11 +69,18 @@ Users scanning the QR codes will experience a direct redirection to the final li
     ├── test_db.py
     ├── test_factory.py
     └── test_main.py
-
+├── run.py
+├── requirements.txt
+├── Dockerfile
+├── docker-compose.yml
+├── schema.sql
+├── start.bat
+├── start.sh
+├── stop.bat
+├── stop.sh
 ```
 
-
-## Installation
+## Installation without manual setup
 
 1. Clone the repository:
     ```bash
@@ -122,8 +121,7 @@ chmod +x start.sh
 > 
 > The `start.sh` and `start.bat` scripts create the `.flask.env` and `.mysql.env` files with default values. REMEMBER to change the default values in the `.env` files to secure your application.
 
-
-### Run Flask To Develop Locally
+# Run Flask To Develop Locally
 
 1. Clone the repository:
     ```bash
@@ -204,17 +202,13 @@ Note: These `.env` files are included in .`gitignore` to protect sensitive data.
 
 ```plaintext
 .
-└── docker-comose.yml
-    ├── qr-db
+└── docker-compose.yml
+    ├── qr-db:
     │   └── mysql:8.4
-    ├── qr-app
-    │   ├── build: .
-    │   └── depends_on:
-    │       └── qr-db
-    └── nginx-proxy
-        ├── build: proxy
+    └── qr-app:
+        ├── build .
         └── depends_on:
-            └── qr-app
+            └── qr-db
 ```
 
 ## Deployment with Docker and Docker Compose
