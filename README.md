@@ -22,9 +22,12 @@ This project serves as a practical platform to study and experiment with:
 Users scanning the QR codes will experience a direct redirection to the final link, unaware of the underlying intermediate step managed by the app.
 
 ### Get Started
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Usage](#usage)
+- [Installation without setup](#installation-without-setup)
+    - [ON WINDOWS](#on-windows)
+    - [ON UNIX](#on-unix)
+- [Run Flask To Develop Locally](#run-flask-to-develop-locally)
+    - [Configuration](#configuration)
+    - [Usage](#usage)
 - [Testing](#testing)
 - [Deployment Structure](#deployment-structure)
 - [Deployment with Docker and Docker Compose](#deployment-with-docker-and-docker-compose)
@@ -61,14 +64,14 @@ Users scanning the QR codes will experience a direct redirection to the final li
 │       ├── base.html
 │       ├── error.html
 │       └── index.html
-└── tests
-    ├── conftest.py
-    ├── data.sql
-    ├── test_auth.py
-    ├── test_dashboard.py
-    ├── test_db.py
-    ├── test_factory.py
-    └── test_main.py
+├── tests
+│   ├── conftest.py
+│   ├── data.sql
+│   ├── test_auth.py
+│   ├── test_dashboard.py
+│   ├── test_db.py
+│   ├── test_factory.py
+│   └── test_main.py
 ├── run.py
 ├── requirements.txt
 ├── Dockerfile
@@ -77,16 +80,16 @@ Users scanning the QR codes will experience a direct redirection to the final li
 ├── start.bat
 ├── start.sh
 ├── stop.bat
-├── stop.sh
+└── stop.sh
 ```
 
-## Installation without manual setup
+## Installation without setup
 
-1. Clone the repository:
-    ```bash
-    git clone https://github.com/yourusername/QR-flask.git
-    cd QR-flask
-    ```
+Clone the repository:
+```bash
+git clone https://github.com/yourusername/QR-flask.git
+cd QR-flask
+```
 
 ### ON WINDOWS
 - First, change permissions for the `start.bat` & `stop.bat` files:
