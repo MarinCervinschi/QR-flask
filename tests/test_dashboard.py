@@ -68,7 +68,7 @@ def test_edit_link(client, auth):
 
     with client.application.app_context():
         result = query_db("SELECT * FROM dynamic_links WHERE id = 1", one=True)
-        assert result['external'] == 'http://newexample.com'
+        assert result['external'] == 'newexample.com'
 
 def test_generate_qr_code(client, auth):
     auth.admin()

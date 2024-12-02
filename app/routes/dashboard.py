@@ -88,7 +88,7 @@ def delete():
 @bp.route('/edit', methods=['POST'])
 def edit():
     id = request.form.get('id')
-    external_value = request.form['external']
+    external_value = request.form['external'].replace("http://", "").replace("https://", "")
 
     try:
         query = "UPDATE dynamic_links SET external = %s WHERE id = %s"
