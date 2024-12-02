@@ -3,4 +3,4 @@ REM File stop.bat
 
 REM OS specific commands
 echo Running on Windows
-docker-compose down -v
+docker compose down -v
