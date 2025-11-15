@@ -22,7 +22,7 @@ services:
     env_file:
       - .flask.env
     ports:
-      - 8000:8000
+      - 8000:5000
     depends_on:
       - qr-db
     networks:

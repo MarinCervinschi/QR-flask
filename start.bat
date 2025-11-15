@@ -5,8 +5,8 @@ REM .flask.env config
 IF NOT EXIST .flask.env (
     echo FLASK_APP=app>> .flask.env
     echo FLASK_RUN_PORT=5000>> .flask.env
-    echo FLASK_RUN_HOST=127.0.0.1>> .flask.env
-    echo APP_URL=http://127.0.0.1:5000>> .flask.env
+    echo FLASK_RUN_HOST=0.0.0.0>> .flask.env
+    echo APP_URL=http://localhost:8000>> .flask.env
     echo SECRET_KEY=your_secret_key>> .flask.env
     echo PERMANENT_SESSION_LIFETIME=30>> .flask.env
 )
